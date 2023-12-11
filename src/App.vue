@@ -1,18 +1,30 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <code v-if="json">{{ json }}</code>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  data() {
+    return {
+      json: null,
+    }
+  },
+  mounted() {
+    this.loadJSON()
+  },
+  methods: {
+    async loadJSON() {
+      try {
+        const response = await fetch('https://app.m-itrust.com/v2/public/claims')
+        this.json = await response.json()
+      } catch (error) {
+        console.error('Failed fetching JSON grammar file', error.message)
+      }
+    }
+  },
 }
 </script>
 
