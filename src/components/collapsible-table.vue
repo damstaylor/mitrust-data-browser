@@ -14,6 +14,11 @@
           {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
         </b-button>
       </template>
+      <template #cell(examples)="row">
+        <ul>
+          <li v-for="(item, key) of row.item.examples" :key="key">{{ item }}</li>
+        </ul>
+      </template>
       <template #row-details="row">
         <collapsible-table v-if="row?.item?.claim_type === 'recursive'"
                            no-header
