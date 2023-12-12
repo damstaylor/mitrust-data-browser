@@ -1,22 +1,27 @@
 <template>
   <div id="app">
-    <b-container>
+    <b-container fluid>
       <span v-if="!isLoaded">Loading...</span>
-      <b-table v-else :items="scopesArray" :fields="fields">
-
-      </b-table>
+      <collapsible-table v-else
+                         dark
+                         :items="formattedScopesArray"
+                         :fields="mainFields"
+      />
     </b-container>
   </div>
 </template>
 
 <script>
+import CollapsibleTable from '@/components/collapsible-table.vue'
+
 export default {
   name: 'App',
+  components: {CollapsibleTable},
   data() {
     return {
       isLoaded: false,
       json: null,
-      fields: ['_key', 'claim_type', 'desc_2', 'examples'],
+      mainFields: ['_key', 'claim_type', 'desc_2', 'examples', 'openid', 'show_details'],
     }
   },
   mounted() {
@@ -29,11 +34,12 @@ export default {
     scopes() {
       return this.jsonData?.scopes || null
     },
-    scopesArray() {
+    formattedScopesArray() {
       return this.scopes ? Object.entries(this.scopes).map(item => ({
-          _key: item[0],
-          ...item[1]
-        })
+            _key: item[0],
+            ...item[1],
+            _showDetails: false
+          })
       ) : []
     },
     deprecated() {
@@ -57,7 +63,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
