@@ -19,6 +19,9 @@
           <li v-for="(item, key) of row.item.examples" :key="key">{{ item }}</li>
         </ul>
       </template>
+      <template #cell(openid)="row">
+        <span>{{ !!row.item.openid ? '✅' : '❌' }}</span>
+      </template>
       <template #row-details="row">
         <collapsible-table v-if="row?.item?.claim_type === 'recursive'"
                            no-header
