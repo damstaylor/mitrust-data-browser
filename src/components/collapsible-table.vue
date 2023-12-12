@@ -68,6 +68,7 @@ export default {
       let sanitizedRow = {...row}
       delete sanitizedRow.desc_2
       delete sanitizedRow.claim_type
+      delete sanitizedRow.openid
       delete sanitizedRow._key
       delete sanitizedRow._showDetails
       return this.formatScopesObjAsArray(sanitizedRow)
