@@ -7,8 +7,9 @@
              fixed
     >
       <template #cell(show_details)="row">
-        <b-button v-if="row.item.claim_type === 'recursive'"
-                  size="sm" @click="log(row)"
+        <b-button v-if="row.item.claim_type && Object.keys(sanitizeItem(row.item)).length"
+                  size="sm"
+                  @click="row.toggleDetails"
                   class="mr-2"
         >
           {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
@@ -23,19 +24,13 @@
         <span>{{ !!row.item.openid ? '✅' : '❌' }}</span>
       </template>
       <template #row-details="row">
-        <collapsible-table v-if="row?.item?.claim_type === 'recursive'"
+        <collapsible-table v-if="row.item.claim_type && Object.keys(sanitizeItem(row.item)).length"
                            no-header
                            borderless
                            :dark="!dark"
-                           :items="getOtherRowItems(row.item)"
+                           :items="formatObjectAsArray(sanitizeItem(row.item))"
                            :fields="fields"
         />
-        <b-card v-else>
-          <code>{{ row.item }}</code>
-          <ul>
-            <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value }}</li>
-          </ul>
-        </b-card>
       </template>
     </b-table>
   </div>
@@ -52,26 +47,26 @@ export default {
     noHeader: {type: Boolean, default: false},
   },
   methods: {
-    log(row) {
-      row.toggleDetails()
-      console.log(row)
-    },
-    formatScopesObjAsArray(scopes) {
-      return scopes ? Object.entries(scopes).map(item => ({
+    // { key1: value1, key2: value2, ... } => [ { _key: key1, value1, _showDetails: false }, ... ]
+    formatObjectAsArray(obj) {
+      let res = Object.entries(obj).map(item => ({
             _key: item[0],
             ...item[1],
             _showDetails: false
           })
-      ) : []
+      )
+      console.log(res)
+      return res
     },
-    getOtherRowItems(row) {
-      let sanitizedRow = {...row}
-      delete sanitizedRow.desc_2
-      delete sanitizedRow.claim_type
-      delete sanitizedRow.openid
-      delete sanitizedRow._key
-      delete sanitizedRow._showDetails
-      return this.formatScopesObjAsArray(sanitizedRow)
+    sanitizeItem(item) {
+      let sanitizedItem = {...item}
+      delete sanitizedItem.claim_type
+      delete sanitizedItem.desc_2
+      delete sanitizedItem.examples
+      delete sanitizedItem.openid
+      delete sanitizedItem._key
+      delete sanitizedItem._showDetails
+      return sanitizedItem
     },
   },
 }
