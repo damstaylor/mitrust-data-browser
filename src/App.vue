@@ -36,12 +36,7 @@ export default {
       return this.jsonData?.scopes || null
     },
     formattedScopesArray() {
-      return this.scopes ? Object.entries(this.scopes).map(item => ({
-            _key: item[0],
-            ...item[1],
-            _showDetails: false
-          })
-      ) : []
+      return this.scopes ? this.formatObjectAsArray(this.scopes) : []
     },
     deprecated() {
       return this.jsonData?.deprecated || null
