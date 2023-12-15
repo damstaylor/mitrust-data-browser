@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     sanitizeItem(item) {
-      const {claim_type, desc2, examples, openid, _key, _showDetails, ...rest} = item // eslint-disable-line
+      const {claim_type, desc_2, examples, openid, _key, _showDetails, ...rest} = item // eslint-disable-line
       return rest
     },
   },
