@@ -14,7 +14,7 @@
       <div v-if="deprecated" class="deprecated">
         <h1>Deprecated</h1>
         <collapsible-table :items="formatObjectAsArray(deprecated)"
-                           :fields="[...mainFields, 'replaced_by']"
+                           :fields="deprecatedFields"
                            :format-object-as-array="formatObjectAsArray"
         />
       </div>
@@ -39,6 +39,11 @@ export default {
     this.loadJSON()
   },
   computed: {
+    deprecatedFields() {
+      let fields = this.mainFields.slice();
+      fields.splice(-1, 0, 'replaced_by')
+      return fields
+    },
     jsonData() {
       return this.json?.data || null
     },
