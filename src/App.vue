@@ -33,7 +33,7 @@ export default {
       allOpened: false,
       isLoaded: false,
       json: null,
-      mainFields: ['_key', 'claim_type', 'desc_2', 'examples', 'openid'],
+      mainFields: ['_key', 'claim_type', 'desc_2', 'examples', 'openid', 'as_list'],
     }
   },
   mounted() {
