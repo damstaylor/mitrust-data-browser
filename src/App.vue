@@ -53,14 +53,12 @@ export default {
   methods: {
     // { key1: value1, key2: value2, ... } => [ { _key: key1, value1, _showDetails: false }, ... ]
     formatObjectAsArray(obj) {
-      let res = Object.entries(obj).map(item => ({
+      return Object.entries(obj).map(item => ({
             _key: item[0],
             ...item[1],
             _showDetails: false
           })
       )
-      console.log(res)
-      return res
     },
     async loadJSON() {
       try {
