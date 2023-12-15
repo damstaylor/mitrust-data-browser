@@ -1,13 +1,23 @@
 <template>
   <div id="app">
-    <b-container fluid>
-      <span v-if="!isLoaded">Loading...</span>
-      <collapsible-table v-else
-                         dark
-                         :items="formattedScopesArray"
+    <span v-if="!isLoaded">Loading...</span>
+    <b-container v-else fluid>
+      <h1>Scopes</h1>
+      <collapsible-table :items="formattedScopesArray"
                          :fields="mainFields"
                          :format-object-as-array="formatObjectAsArray"
       />
+      <div v-if="markers" class="markers">
+        <h1>Markers</h1>
+        <b-table :items="markers" :fields="['marker', 'description']"/>
+      </div>
+      <div v-if="deprecated" class="deprecated">
+        <h1>Deprecated</h1>
+        <collapsible-table :items="formatObjectAsArray(deprecated)"
+                           :fields="[...mainFields, 'replaced_by']"
+                           :format-object-as-array="formatObjectAsArray"
+        />
+      </div>
     </b-container>
   </div>
 </template>
