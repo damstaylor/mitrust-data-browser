@@ -93,7 +93,7 @@ export default {
   margin-top: 60px;
 }
 
-table, .collapsible-table {
+table {
   margin-bottom: 80px;
 }
 </style>
