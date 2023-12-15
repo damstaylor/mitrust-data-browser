@@ -7,7 +7,7 @@
              fixed
     >
       <template #cell(show_details)="row">
-        <b-button v-if="hasRowSubNodes(row)"
+        <b-button v-if="hasRowItemKeys(row)"
                   size="sm"
                   @click="row.toggleDetails"
                   class="mr-2"
@@ -24,7 +24,7 @@
         <span>{{ !!row.item.openid ? '✅' : '❌' }}</span>
       </template>
       <template #row-details="row">
-        <collapsible-table v-if="hasRowSubNodes(row)"
+        <collapsible-table v-if="hasRowItemKeys(row)"
                            no-header
                            borderless
                            :dark="!dark"
@@ -56,9 +56,6 @@ export default {
     },
     hasRowItemKeys() {
       return row => Object.keys(this.getSanitizedItemFromRow(row)).length > 0
-    },
-    hasRowSubNodes() {
-      return row => row.item.claim_type && this.hasRowItemKeys(row)
     },
   },
   methods: {
