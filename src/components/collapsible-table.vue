@@ -21,7 +21,7 @@
         </ul>
       </template>
       <template #cell(openid)="row">
-        <span>{{ !!row.item.openid ? '✅' : '❌' }}</span>
+        <span>{{ !!row.item.openid ? '✓' : '⨯' }}</span>
       </template>
       <template #row-details="row">
         <collapsible-table v-if="hasRowItemKeys(row)"
@@ -42,7 +42,6 @@ export default {
   props: {
     items: {type: Array, default: () => []},
     fields: {type: Array, default: () => []},
-    dark: {type: Boolean, default: false},
     noHeader: {type: Boolean, default: false},
     formatObjectAsArray: {type: Function, default: () => {}},
   },
@@ -62,21 +61,35 @@ export default {
   },
   methods: {
     sanitizeItem(item) {
-      const {claim_type, desc_2, examples, openid, _key, _showDetails, replaced_by, ...rest} = item // eslint-disable-line
-      return rest
+      let sanitizedItem = {...item}
+      this.fields.forEach(field => {
+        delete sanitizedItem[field]
+      });
+      delete sanitizedItem._showDetails
+      delete sanitizedItem._key
+      return sanitizedItem
     },
   },
 }
 </script>
 
 <style scoped>
-menu:not(article menu), ol:not(article ol), ul:not(article ul) {
-  list-style: none;
+.collapsible-table {
+  border: 1px solid var(--bs-border-color);
+}
+
+/deep/ thead {
+  border-bottom: 1px solid var(--bs-border-color);
 }
 
 /deep/ td {
   position: relative;
 }
+
+menu:not(article menu), ol:not(article ol), ul:not(article ul) {
+  list-style: none;
+}
+
 
 button {
   border: none;
@@ -85,9 +98,5 @@ button {
   height: 24px;
   position: absolute;
   left: 32px;
-}
-
-.dark { /* eslint-disable-line */
-  color: var(--bs-light);
 }
 </style>
