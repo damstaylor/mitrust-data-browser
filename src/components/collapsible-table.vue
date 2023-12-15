@@ -6,14 +6,14 @@
              :thead-class="noHeader ? 'd-none' : ''"
              fixed
     >
-      <template #cell(show_details)="row">
-        <b-button v-if="hasRowItemKeys(row)"
-                  size="sm"
-                  @click="row.toggleDetails"
-                  class="mr-2"
+      <template #cell(_key)="row">
+        <button v-if="hasRowItemKeys(row)"
+                :class="getButtonClass"
+                @click="row.toggleDetails"
         >
-          {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
-        </b-button>
+          {{ row.detailsShowing ? '▼' : '▶' }}
+        </button>
+        {{ row.item._key }}
       </template>
       <template #cell(examples)="row">
         <ul>
@@ -48,6 +48,9 @@ export default {
     formatObjectAsArray: {type: Function, default: () => {}},
   },
   computed: {
+    getButtonClass() {
+      return this.dark ? 'dark' : '';
+    },
     getSanitizedItemFromRow() {
       return row => this.sanitizeItem(row.item)
     },
@@ -70,5 +73,22 @@ export default {
 <style scoped>
 menu:not(article menu), ol:not(article ol), ul:not(article ul) {
   list-style: none;
+}
+
+/deep/ td {
+  position: relative;
+}
+
+button {
+  border: none;
+  background-color: unset;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 32px;
+}
+
+.dark { /* eslint-disable-line */
+  color: var(--bs-light);
 }
 </style>

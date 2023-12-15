@@ -32,7 +32,7 @@ export default {
     return {
       isLoaded: false,
       json: null,
-      mainFields: ['_key', 'claim_type', 'desc_2', 'examples', 'openid', 'show_details'],
+      mainFields: ['_key', 'claim_type', 'desc_2', 'examples', 'openid'],
     }
   },
   mounted() {
