@@ -4,7 +4,7 @@
              :items="items"
              :fields="fields"
              :thead-class="noHeader ? 'd-none' : ''"
-             fixed
+             :fixed="fixed"
     >
       <template #cell(_key)="row">
         <button v-if="hasRowItemKeys(row)"
@@ -42,6 +42,7 @@ export default {
   props: {
     items: {type: Array, default: () => []},
     fields: {type: Array, default: () => []},
+    fixed: {type: Boolean, default: false},
     noHeader: {type: Boolean, default: false},
     formatObjectAsArray: {type: Function, default: () => {}},
   },
@@ -75,6 +76,7 @@ export default {
 
 <style scoped>
 .collapsible-table {
+  margin-bottom: 80px;
   border: 1px solid var(--bs-border-color);
 }
 

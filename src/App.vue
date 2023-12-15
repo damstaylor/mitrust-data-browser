@@ -1,21 +1,30 @@
 <template>
   <div id="app">
-    <span v-if="!isLoaded">Loading...</span>
+    <div v-if="!isLoaded" class="loading">
+      <div>Loading...</div>
+      <b-spinner />
+    </div>
     <b-container v-else fluid>
       <h1>Scopes</h1>
       <collapsible-table :items="formattedScopesArray"
                          :fields="mainFields"
                          :format-object-as-array="formatObjectAsArray"
+                         :fixed="true"
       />
       <div v-if="markers" class="markers">
         <h1>Markers</h1>
-        <b-table :items="markers" :fields="['marker', 'description']" outlined borderless />
+        <collapsible-table :items="markers"
+                           :fields="['marker', 'description']"
+                           outlined
+                           borderless
+        />
       </div>
       <div v-if="deprecated" class="deprecated">
         <h1>Deprecated</h1>
         <collapsible-table :items="formatObjectAsArray(deprecated)"
                            :fields="deprecatedFields"
                            :format-object-as-array="formatObjectAsArray"
+                           :fixed="true"
         />
       </div>
     </b-container>
@@ -30,7 +39,6 @@ export default {
   components: {CollapsibleTable},
   data() {
     return {
-      allOpened: false,
       isLoaded: false,
       json: null,
       mainFields: ['_key', 'claim_type', 'desc_2', 'examples', 'openid', 'as_list'],
@@ -62,11 +70,6 @@ export default {
     },
   },
   methods: {
-    toggleAll() {
-      // this.jsonData.scopes.forEach(obj => {
-      //
-      // });
-    },
     // { key1: value1, key2: value2, ... } => [ { _key: key1, value1, _showDetails: false }, ... ]
     formatObjectAsArray(obj, showDetails = false) {
       return Object.entries(obj).map(item => ({
@@ -97,6 +100,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin: 60px 80px;
+  height: 100vh;
 }
 
 table {
@@ -107,7 +111,15 @@ table {
   border-bottom: 1px solid var(--bs-border-color);
 }
 
-.markers {
-  margin-top: 80px;
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.loading .spinner-border {
+  margin-top: 20px;
 }
 </style>
