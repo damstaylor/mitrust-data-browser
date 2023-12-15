@@ -7,7 +7,7 @@
              fixed
     >
       <template #cell(show_details)="row">
-        <b-button v-if="row.item.claim_type && Object.keys(sanitizeItem(row.item)).length"
+        <b-button v-if="hasRowSubNodes(row)"
                   size="sm"
                   @click="row.toggleDetails"
                   class="mr-2"
@@ -24,18 +24,18 @@
         <span>{{ !!row.item.openid ? '✅' : '❌' }}</span>
       </template>
       <template #row-details="row">
-        <collapsible-table v-if="row.item.claim_type && Object.keys(sanitizeItem(row.item)).length"
+        <collapsible-table v-if="hasRowSubNodes(row)"
                            no-header
                            borderless
                            :dark="!dark"
-                           :items="formatObjectAsArray(sanitizeItem(row.item))"
+                           :items="getSubNodesFromRow(row)"
                            :fields="fields"
+                           :format-object-as-array="formatObjectAsArray"
         />
       </template>
     </b-table>
   </div>
 </template>
-
 
 <script>
 export default {
@@ -45,28 +45,26 @@ export default {
     fields: {type: Array, default: () => []},
     dark: {type: Boolean, default: false},
     noHeader: {type: Boolean, default: false},
+    formatObjectAsArray: {type: Function, default: () => {}},
+  },
+  computed: {
+    getSanitizedItemFromRow() {
+      return row => this.sanitizeItem(row.item)
+    },
+    getSubNodesFromRow() {
+      return row => this.formatObjectAsArray(this.getSanitizedItemFromRow(row))
+    },
+    hasRowItemKeys() {
+      return row => Object.keys(this.getSanitizedItemFromRow(row)).length > 0
+    },
+    hasRowSubNodes() {
+      return row => row.item.claim_type && this.hasRowItemKeys(row)
+    },
   },
   methods: {
-    // { key1: value1, key2: value2, ... } => [ { _key: key1, value1, _showDetails: false }, ... ]
-    formatObjectAsArray(obj) {
-      let res = Object.entries(obj).map(item => ({
-            _key: item[0],
-            ...item[1],
-            _showDetails: false
-          })
-      )
-      console.log(res)
-      return res
-    },
     sanitizeItem(item) {
-      let sanitizedItem = {...item}
-      delete sanitizedItem.claim_type
-      delete sanitizedItem.desc_2
-      delete sanitizedItem.examples
-      delete sanitizedItem.openid
-      delete sanitizedItem._key
-      delete sanitizedItem._showDetails
-      return sanitizedItem
+      const {claim_type, desc2, examples, openid, _key, _showDetails, ...rest} = item // eslint-disable-line
+      return rest
     },
   },
 }
