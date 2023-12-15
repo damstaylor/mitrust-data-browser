@@ -1,6 +1,6 @@
 <template>
   <div class="collapsible-table">
-    <b-table :dark="dark"
+    <b-table borderless
              :items="items"
              :fields="fields"
              :thead-class="noHeader ? 'd-none' : ''"
@@ -27,7 +27,6 @@
         <collapsible-table v-if="hasRowItemKeys(row)"
                            no-header
                            borderless
-                           :dark="!dark"
                            :items="getSubNodesFromRow(row)"
                            :fields="fields"
                            :format-object-as-array="formatObjectAsArray"

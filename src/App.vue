@@ -9,7 +9,7 @@
       />
       <div v-if="markers" class="markers">
         <h1>Markers</h1>
-        <b-table :items="markers" :fields="['marker', 'description']"/>
+        <b-table :items="markers" :fields="['marker', 'description']" outlined borderless />
       </div>
       <div v-if="deprecated" class="deprecated">
         <h1>Deprecated</h1>
@@ -30,6 +30,7 @@ export default {
   components: {CollapsibleTable},
   data() {
     return {
+      allOpened: false,
       isLoaded: false,
       json: null,
       mainFields: ['_key', 'claim_type', 'desc_2', 'examples', 'openid'],
@@ -61,12 +62,17 @@ export default {
     },
   },
   methods: {
+    toggleAll() {
+      // this.jsonData.scopes.forEach(obj => {
+      //
+      // });
+    },
     // { key1: value1, key2: value2, ... } => [ { _key: key1, value1, _showDetails: false }, ... ]
-    formatObjectAsArray(obj) {
+    formatObjectAsArray(obj, showDetails = false) {
       return Object.entries(obj).map(item => ({
             _key: item[0],
             ...item[1],
-            _showDetails: false
+            _showDetails: showDetails
           })
       )
     },
@@ -95,5 +101,13 @@ export default {
 
 table {
   margin-bottom: 80px;
+}
+
+/deep/ table thead {
+  border-bottom: 1px solid var(--bs-border-color);
+}
+
+.markers {
+  margin-top: 80px;
 }
 </style>
