@@ -8,7 +8,6 @@
     >
       <template #cell(_key)="row">
         <button v-if="hasRowItemKeys(row)"
-                :class="getButtonClass"
                 @click="row.toggleDetails"
         >
           {{ row.detailsShowing ? '▼' : '▶' }}
@@ -47,9 +46,6 @@ export default {
     formatObjectAsArray: {type: Function, default: () => {}},
   },
   computed: {
-    getButtonClass() {
-      return this.dark ? 'dark' : '';
-    },
     getSanitizedItemFromRow() {
       return row => this.sanitizeItem(row.item)
     },
